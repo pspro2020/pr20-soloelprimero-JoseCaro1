@@ -13,12 +13,14 @@ public class SearchElement implements Callable<ElementResult> {
 
     @Override
     public ElementResult call() throws Exception {
-        boolean element=search();
+        boolean element = search();
 
-        if(!element){
+        if (!element) {
             throw new RuntimeException("Not element found");
         }
         return new ElementResult(numberRow, column);
+
+
     }
 
     public SearchElement(int search, int matriz[][], int numberRow) {
@@ -29,10 +31,10 @@ public class SearchElement implements Callable<ElementResult> {
     }
 
     private boolean search() {
-        row=getRow(matriz,numberRow);
+        row = getRow(matriz, numberRow);
         for (int i = 0; i < row.size(); i++) {
             if (search == row.get(i)) {
-                column=i;
+                column = i;
                 return true;
             }
         }
@@ -40,11 +42,11 @@ public class SearchElement implements Callable<ElementResult> {
         return false;
     }
 
-    private List<Integer> getRow(int matriz[][],int num) {
-        if(matriz.length<=num){
+    private List<Integer> getRow(int matriz[][], int num) {
+        if (matriz.length <= num) {
             throw new IllegalArgumentException("Invalid row");
         }
-        List<Integer> lista= new ArrayList<>();
+        List<Integer> lista = new ArrayList<>();
         for (int i = 0; i < matriz[num].length; i++) {
             lista.add(matriz[num][i]);
         }

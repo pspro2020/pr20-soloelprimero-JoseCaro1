@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class MainInvokeAny {
 
 
+    private boolean value=false;
     ThreadPoolExecutor fixedThreadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     int[][] matriz = getRandomMatriz5x5();
     List<Callable<ElementResult>> callableList = new ArrayList<>();
@@ -21,28 +22,33 @@ public class MainInvokeAny {
 
     public MainInvokeAny() {
         for (int i = 0; i < matriz.length; i++) {
-            int num = random.nextInt(random.nextInt(20) + 1);
+            int num = random.nextInt(20)+20;
             System.out.println(num);
             callableList.add(new SearchElement(num, matriz, i));
         }
         try {
-            try {
-                elementResult = fixedThreadPool.invokeAny(callableList);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+
+            elementResult = fixedThreadPool.invokeAny(callableList);
+
         } catch (InterruptedException ignored) {
+        } catch (ExecutionException e) {
+            System.out.println("Not found element");
+            value=true;
         } finally {
             fixedThreadPool.shutdown();
         }
 
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                System.out.printf("La fila %d elemento %d\n", i, matriz[i][j]);
+        if (!value) {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    System.out.printf("La fila %d elemento %d\n", i, matriz[i][j]);
+                }
+                System.out.println();
             }
-            System.out.println();
+            System.out.println(elementResult);
         }
-        System.out.println(elementResult);
+
+
 
 
     }
